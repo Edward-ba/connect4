@@ -18,7 +18,7 @@ import java.util.Random;
  * @author Martin
  */
 public class Tutorial03 {
-    public static void main(String[] args) {
+    public static void tut3(String[] args) {
         /*
         In the third tutorial, we will look at using the next layer available in Lanterna, which is built on top of the
         Terminal interface you saw in tutorial 1 and 2.

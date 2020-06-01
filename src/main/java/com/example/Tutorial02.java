@@ -18,7 +18,7 @@ import java.io.IOException;
  * @author Martin
  */
 public class Tutorial02 {
-    public static void main(String[] args) {
+    public static void tut2(String[] args) {
         /*
         In this second tutorial, we'll expand on how to use the Terminal interface to provide more advanced
         functionality.

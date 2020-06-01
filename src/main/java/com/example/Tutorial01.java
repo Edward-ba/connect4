@@ -12,7 +12,7 @@ import java.io.IOException;
  * @author Martin
  */
 public class Tutorial01 {
-    public static void main(String[] args) throws InterruptedException {
+    public static void tut1(String[] args) throws InterruptedException {
         /*
         This is the first tutorial and entrypoint for learning more about how to use lanterna. We will use the lower
         layer in this tutorial to demonstrate how to move around the cursor and how to output text in different
