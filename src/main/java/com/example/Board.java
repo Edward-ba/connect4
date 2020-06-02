@@ -60,6 +60,8 @@ public class Board {
         int player2NumInARow = 0;
         for (int x = 0; x <= width; ++x)
         {
+            player1NumInARow = 0;
+            player2NumInARow = 0;
             for (int y = 0; y <= height; ++y)
             {
 
@@ -91,9 +93,10 @@ public class Board {
         }
         for (int y = 0; y <= height; ++y)
         {
+            player1NumInARow = 0;
+            player2NumInARow = 0;
             for (int x = 0; x <= width; ++x)
             {
-
                 if (grid[y][x] == player1piece)
                 {
                     ++player1NumInARow;
@@ -122,8 +125,12 @@ public class Board {
         }
         if (player1MaxNumInARow >= 4)
         {
-            System.out.println("Player1Wins");
+            System.out.println("Player 1 Wins");
             return true;
+        }
+        if (player2MaxNumInARow >= 4)
+        {
+            System.out.println("Player 2 Wins");
         }
         return false;
     }
