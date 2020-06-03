@@ -3,6 +3,8 @@ import java.lang.*;
 import java.util.*;
 
 public class Board {
+    private String tryMessage = "Try Again";
+    Random random = new Random();
     int width = 7;
     int height = 7;
     char[][] grid = new char[height][width];
@@ -10,9 +12,10 @@ public class Board {
     char player1piece = '@';
     char player2piece = 'O';
     public void clearBoard() {
-        for (int x = 0; x <= width; ++x)
+        for (int x = 0; x < width; ++x)
         {
-            for (int y = 0; y <= height; ++y)
+            numInEachCol[x] = height - 1;
+            for (int y = 0; y < height; ++y)
             {
                 grid[y][x] = ' ';
             }
@@ -20,36 +23,50 @@ public class Board {
     }
 
     public void printBoard() {
-        System.out.println("0123456");
-        for (int x = 0; x <= width; ++x)
+        System.out.println(" 0123456");
+        for (int x = 0; x < width; ++x)
         {
-            for (int y = 0; y <= height; ++y)
+            System.out.print("|");
+            for (int y = 0; y < height; ++y)
             {
                 System.out.print(grid[y][x]);
             }
-            System.out.println();
+            System.out.println("|");
         }
+        System.out.println(" 0123456");
     }
 
-    public boolean placeAPiece(int col, int player)
+    public boolean placeAPiecePlayer(int col, int player)
     {
         if (col >= width
                 || col < 0
-                || numInEachCol[col] >= height
+                || numInEachCol[col] < 0
                 || player > 2
                 || player < 1)
         {
+            System.out.println(tryMessage);
             return false;
         }
-        ++numInEachCol[col];
         if (player == 1)
         {
-            grid[numInEachCol[col]][col] = player1piece;
+            grid[col][numInEachCol[col]] = player1piece;
         }
         if (player == 2)
         {
-            grid[numInEachCol[col]][col] = player2piece;
+            grid[col][numInEachCol[col]] = player2piece;
         }
+        numInEachCol[col] -= 1;
+        return true;
+    }
+    public boolean placeAPieceComputer()
+    {
+        int col = random.nextInt(width);
+        if (numInEachCol[col] < 0)
+        {
+            return false;
+        }
+        grid[col][numInEachCol[col]] = player2piece;
+        numInEachCol[col] -= 1;
         return true;
     }
 
@@ -58,11 +75,11 @@ public class Board {
         int player1NumInARow = 0;
         int player2MaxNumInARow = 0;
         int player2NumInARow = 0;
-        for (int x = 0; x <= width; ++x)
+        for (int x = 0; x < width; ++x)
         {
             player1NumInARow = 0;
             player2NumInARow = 0;
-            for (int y = 0; y <= height; ++y)
+            for (int y = 0; y < height; ++y)
             {
 
                 if (grid[y][x] == player1piece)
@@ -91,11 +108,11 @@ public class Board {
                 }
             }
         }
-        for (int y = 0; y <= height; ++y)
+        for (int y = 0; y < height; ++y)
         {
             player1NumInARow = 0;
             player2NumInARow = 0;
-            for (int x = 0; x <= width; ++x)
+            for (int x = 0; x < width; ++x)
             {
                 if (grid[y][x] == player1piece)
                 {
