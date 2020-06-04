@@ -3,6 +3,7 @@ import java.lang.*;
 import java.util.*;
 
 public class Board {
+    boolean onePlayer;
     private String tryMessage = "Try Again";
     Random random = new Random();
     int width = 7;
@@ -36,14 +37,17 @@ public class Board {
         System.out.println(" 0123456");
     }
 
-    public boolean placeAPiecePlayer(int col, int player)
+    public boolean placeAPiece(int col, int player)
     {
         if (col >= width
                 || col < 0
                 || numInEachCol[col] < 0
                 || player > 2
-                || player < 1)
-        {
+                || player < 1) {
+            if (onePlayer && player == 2)
+            {
+                return false;
+            }
             System.out.println(tryMessage);
             return false;
         }
@@ -55,17 +59,6 @@ public class Board {
         {
             grid[col][numInEachCol[col]] = player2piece;
         }
-        numInEachCol[col] -= 1;
-        return true;
-    }
-    public boolean placeAPieceComputer()
-    {
-        int col = random.nextInt(width);
-        if (numInEachCol[col] < 0)
-        {
-            return false;
-        }
-        grid[col][numInEachCol[col]] = player2piece;
         numInEachCol[col] -= 1;
         return true;
     }

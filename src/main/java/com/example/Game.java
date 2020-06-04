@@ -12,25 +12,39 @@ public class Game {
         try {
             ret = scanner.nextInt();
             return ret;
-        } catch (InputMismatchException e) {
+        } catch (Exception e) {
             return -1;
         }
     }
 
     public void onePlayerGame() throws InterruptedException {
         Board board = new Board();
+        board.onePlayer = true;
         board.clearBoard();
         board.printBoard();
         while (true)
         {
-            int c = 0;
-            while (c <= 1) {
-                int col = readInt("column to put your piece into:");
-                if (board.placeAPiecePlayer(col, 1))
-                {
-                    ++c;
-                }
+            int col = readInt("column to put your piece into:");
+            board.placeAPiece(col, 1);
+            board.printBoard();
+            if (board.checkForWinner())
+            {
+                System.out.println("You win!");
+                break;
+            }
 
+            int check = 0;
+            while (check < 1) {
+                col = random.nextInt(board.width);
+                if (board.placeAPiece(col, 2)) {
+                    ++check;
+                }
+            }
+            board.printBoard();
+            if (board.checkForWinner())
+            {
+                System.out.println("Computer wins :(");
+                break;
             }
         }
     }
