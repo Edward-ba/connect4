@@ -17,7 +17,7 @@ public class Game {
         }
     }
 
-    public void onePlayerGame() throws InterruptedException {
+    public void onePlayerGame() {
         Board board = new Board();
         board.onePlayer = true;
         board.clearBoard();
@@ -44,6 +44,31 @@ public class Game {
             if (board.checkForWinner())
             {
                 System.out.println("Computer wins :(");
+                break;
+            }
+        }
+    }
+
+    public void twoPlayerGame() {
+        Board board = new Board();
+        board.onePlayer = true;
+        board.clearBoard();
+        board.printBoard();
+        while (true)
+        {
+            int col = readInt("Player one please enter the column you want to put your piece into:");
+            board.placeAPiece(col, 1);
+            board.printBoard();
+            if (board.checkForWinner())
+            {
+                break;
+            }
+
+            col = readInt("Player two please enter the column you want to put your piece into:");
+            board.placeAPiece(col, 2);
+            board.printBoard();
+            if (board.checkForWinner())
+            {
                 break;
             }
         }
