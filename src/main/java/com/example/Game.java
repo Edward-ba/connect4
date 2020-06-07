@@ -7,10 +7,12 @@ public class Game {
     Random random = new Random();
 
     int readInt(String message) {
-        int ret;
+        Board board = new Board();
         System.out.print(message);
+        int ret = 0;
         try {
-            ret = scanner.nextInt();
+            String string = scanner.nextLine();
+            ret = Integer.parseInt(string);
             return ret;
         } catch (Exception e) {
             return -1;
@@ -25,7 +27,10 @@ public class Game {
         while (true)
         {
             int col = readInt("column to put your piece into:");
-            board.placeAPiece(col, 1);
+            while (!board.placeAPiece(col, 1))
+            {
+                col = readInt("\n" + board.tryMessage + ":");
+            }
             board.printBoard();
             if (board.checkForWinner())
             {
@@ -57,7 +62,10 @@ public class Game {
         while (true)
         {
             int col = readInt("Player one please enter the column you want to put your piece into:");
-            board.placeAPiece(col, 1);
+            while (!board.placeAPiece(col, 1))
+            {
+                col = readInt("\nPlayer One" + board.tryMessage + ":");
+            }
             board.printBoard();
             if (board.checkForWinner())
             {
@@ -65,7 +73,10 @@ public class Game {
             }
 
             col = readInt("Player two please enter the column you want to put your piece into:");
-            board.placeAPiece(col, 2);
+            while (!board.placeAPiece(col, 1))
+            {
+                col = readInt("\nPlayer Two" + board.tryMessage + ":");
+            }
             board.printBoard();
             if (board.checkForWinner())
             {

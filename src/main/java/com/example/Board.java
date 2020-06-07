@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Board {
     boolean onePlayer;
-    private String tryMessage = "Try Again";
+    public String tryMessage = "Try Again";
     Random random = new Random();
     int width = 7;
     int height = 7;
@@ -39,16 +39,15 @@ public class Board {
 
     public boolean placeAPiece(int col, int player)
     {
-        if (col >= width
-                || col < 0
-                || numInEachCol[col] < 0
-                || player > 2
-                || player < 1) {
+        if ((col >= width)
+                || (col < 0)
+                || (numInEachCol[col] < 0)
+                || (player > 2)
+                || (player < 1)) {
             if (onePlayer && player == 2)
             {
                 return false;
             }
-            System.out.println(tryMessage);
             return false;
         }
         if (player == 1)
@@ -65,9 +64,9 @@ public class Board {
 
     public boolean checkForWinner() {
         int player1MaxNumInARow = 0;
-        int player1NumInARow = 0;
+        int player1NumInARow;
         int player2MaxNumInARow = 0;
-        int player2NumInARow = 0;
+        int player2NumInARow;
         for (int x = 0; x < width; ++x)
         {
             player1NumInARow = 0;
@@ -133,6 +132,10 @@ public class Board {
                 }
             }
         }
+        for (int x = 0; x < width; ++x)
+        {
+            
+        }
         if (player1MaxNumInARow >= 4)
         {
             System.out.println("Player 1 Wins");
@@ -141,6 +144,7 @@ public class Board {
         if (player2MaxNumInARow >= 4)
         {
             System.out.println("Player 2 Wins");
+            return true;
         }
         return false;
     }
