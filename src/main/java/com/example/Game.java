@@ -74,7 +74,7 @@ public class Game {
 
             col = readInt("Player two please enter the column you want to put your piece into:");
 
-            while (!board.placeAPiece(col, 1))
+            while (!board.placeAPiece(col, 2))
                 col = readInt("\nPlayer Two" + board.tryMessage + ":");
             board.printBoard();
 

@@ -24,15 +24,15 @@ public class Board {
     }
 
     public void printBoard() {
-        System.out.println(" 0123456");
-        for (int x = 0; x < width; ++x)
+        System.out.println(" 0 1 2 3 4 5 6");
+        for (int y = height-1; y >= 0; --y)
         {
             System.out.print("|");
-            for (int y = height-1; y >= 0; --y)
-                System.out.print(grid[x][y]);
+            for (int x = 0; x < width; ++x)
+                System.out.print(grid[x][y]+" ");
             System.out.println("|");
         }
-        System.out.println(" 0123456");
+        System.out.println(" 0 1 2 3 4 5 6 ");
     }
 
     public boolean placeAPiece(int col, int player)
@@ -242,5 +242,15 @@ public class Board {
         }
 
         return false;
+    }
+
+    public int piecesToWin(int col, int player)
+    {
+        // temp put piece
+
+        // calc score
+
+        // remove piece
+        return 0;
     }
 }
