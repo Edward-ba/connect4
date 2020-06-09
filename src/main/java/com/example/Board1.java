@@ -2,7 +2,7 @@ package com.example;
 import java.lang.*;
 import java.util.*;
 
-public class Board {
+public class Board1 {
     static final public String tryMessage = "Try Again";
     static final int width = 7;
     static final int height = 6;
@@ -11,15 +11,15 @@ public class Board {
 
     boolean onePlayer;
     Random random = new Random();
-    char[][] grid = new char[width][height];
-    int[] nxtAvailRow = new int[width];
+    char[][] grid = new char[height][width];
+    int[] numInEachCol = new int[width];
 
     public void clearBoard() {
         for (int x = 0; x < width; ++x)
         {
-            nxtAvailRow[x] = 0;
+            numInEachCol[x] = height - 1;
             for (int y = 0; y < height; ++y)
-                 grid[x][y] = ' ';
+                 grid[y][x] = ' ';
         }
     }
 
@@ -28,8 +28,8 @@ public class Board {
         for (int x = 0; x < width; ++x)
         {
             System.out.print("|");
-            for (int y = height-1; y >= 0; --y)
-                System.out.print(grid[x][y]);
+            for (int y = 0; y < height; ++y)
+                System.out.print(grid[y][x]);
             System.out.println("|");
         }
         System.out.println(" 0123456");
@@ -39,7 +39,7 @@ public class Board {
     {
         if ((col >= width)
                 || (col < 0)
-                || (nxtAvailRow[col] >= height)
+                || (numInEachCol[col] < 0)
                 || (player > 2)
                 || (player < 1)) {
             if (onePlayer && player == 2)
@@ -47,8 +47,9 @@ public class Board {
             return false;
         }
 
-        grid[col][nxtAvailRow[col]] = (player == 1) ? player1piece : player2piece;
-        nxtAvailRow[col] += 1;
+        grid[col][numInEachCol[col]] = (player == 1) ? player1piece : player2piece;
+
+        numInEachCol[col] -= 1;
         return true;
     }
     public boolean checkForWinnerHorizontal() {
@@ -62,7 +63,7 @@ public class Board {
             player2NumInARow = 0;
 
             for (int x = 0; x < width; ++x) {
-                if (grid[x][y] == player1piece) {
+                if (grid[y][x] == player1piece) {
                     ++player1NumInARow;
 
                     if (player1NumInARow > player1MaxNumInARow) {
@@ -75,7 +76,7 @@ public class Board {
                     }
                     player2NumInARow = 0;
                 }
-                else if (grid[x][y] == player2piece) {
+                else if (grid[y][x] == player2piece) {
                     ++player2NumInARow;
 
                     if (player2NumInARow > player2MaxNumInARow) {
@@ -108,7 +109,7 @@ public class Board {
             player2NumInARow = 0;
 
             for (int y = 0; y < height; ++y) {
-                if (grid[x][y] == player1piece) {
+                if (grid[y][x] == player1piece) {
                     ++player1NumInARow;
 
                     if (player1NumInARow > player1MaxNumInARow) {
@@ -121,7 +122,7 @@ public class Board {
                     }
                     player2NumInARow = 0;
                 }
-                else if (grid[x][y] == player2piece) {
+                else if (grid[y][x] == player2piece) {
                     ++player2NumInARow;
 
                     if (player2NumInARow > player2MaxNumInARow) {
@@ -157,7 +158,7 @@ public class Board {
             for (int y = 0; y < height; ++y)
             {
 
-                if (grid[x][y] == player1piece)
+                if (grid[y][x] == player1piece)
                 {
                     ++player1NumInARow;
 
@@ -173,7 +174,7 @@ public class Board {
                     }
                     player2NumInARow = 0;
                 }
-                else if (grid[x][y] == player2piece)
+                else if (grid[y][x] == player2piece)
                 {
                     ++player2NumInARow;
 
@@ -202,7 +203,7 @@ public class Board {
 
             for (int x = 0; x < width; ++x)
             {
-                if (grid[x][y] == player1piece)
+                if (grid[y][x] == player1piece)
                 {
                     ++player1NumInARow;
 
@@ -218,7 +219,7 @@ public class Board {
                     }
                     player2NumInARow = 0;
                 }
-                else if (grid[x][y] == player2piece)
+                else if (grid[y][x] == player2piece)
                 {
                     ++player2NumInARow;
 
