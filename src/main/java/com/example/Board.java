@@ -14,9 +14,9 @@ public class Board {
     char[][] grid = new char[width][height];
     int[] nxtAvailRow = new int[width];
 
+
     public void clearBoard() {
-        for (int x = 0; x < width; ++x)
-        {
+        for (int x = 0; x < width; ++x) {
             nxtAvailRow[x] = 0;
             for (int y = 0; y < height; ++y)
                  grid[x][y] = ' ';
@@ -24,224 +24,135 @@ public class Board {
     }
 
     public void printBoard() {
-        System.out.println(" 0 1 2 3 4 5 6");
-        for (int y = height-1; y >= 0; --y)
-        {
+        for (int i = 0; i < width; ++i) {
+            System.out.print(" " + i);
+        }
+        System.out.println();
+        for (int y = height-1; y >= 0; --y) {
             System.out.print("|");
             for (int x = 0; x < width; ++x)
                 System.out.print(grid[x][y]+" ");
             System.out.println("|");
         }
-        System.out.println(" 0 1 2 3 4 5 6 ");
+        for (int i = 0; i < width; ++i) {
+            System.out.print(" " + i);
+        }
+        System.out.println();
     }
 
-    public boolean placeAPiece(int col, int player)
-    {
+    public Coordinates placeAPiece(int col, int player) {
+        Coordinates coordinates = new Coordinates();
         if ((col >= width)
                 || (col < 0)
                 || (nxtAvailRow[col] >= height)
                 || (player > 2)
                 || (player < 1)) {
-            if (onePlayer && player == 2)
-                return false;
-            return false;
+            if (onePlayer && player == 2) {
+                coordinates.check = false;
+                return coordinates;
+            }
+            coordinates.check = false;
+            return coordinates;
         }
 
         grid[col][nxtAvailRow[col]] = (player == 1) ? player1piece : player2piece;
         nxtAvailRow[col] += 1;
-        return true;
+        coordinates.x = col;
+        coordinates.check = true;
+        return coordinates;
     }
-    public boolean checkForWinnerHorizontal() {
+
+    public boolean checkForWinnerHorizontal(Coordinates cor) {
         int player1MaxNumInARow = 0;
-        int player1NumInARow;
+        int player1NumInARow = 0;
         int player2MaxNumInARow = 0;
-        int player2NumInARow;
-
-        for (int y = 0; y < height; ++y) {
-            player1NumInARow = 0;
-            player2NumInARow = 0;
-
-            for (int x = 0; x < width; ++x) {
-                if (grid[x][y] == player1piece) {
-                    ++player1NumInARow;
-
-                    if (player1NumInARow > player1MaxNumInARow) {
-                        player1MaxNumInARow = player1NumInARow;
-
-                        if (player1MaxNumInARow >= 4) {
+        int player2NumInARow = 0;
+        int start = cor.x - 4;
+        int end = cor.x + 4;
+        if (start < 0)
+            start = 0;
+        if (end > width)
+            end = width;
+        for ( ; start < end; ++start) {
+            if (grid[start][cor.y] == player1piece) {
+                ++player1NumInARow;
+                if (player1NumInARow > player1MaxNumInARow) {
+                    player1MaxNumInARow = player1NumInARow;
+                    if (player1MaxNumInARow >= 4) {
+                        if (onePlayer)
+                            System.out.println("You Win! :)");
+                        else
                             System.out.println("Player 1 Wins");
-                            return true;
-                        }
+                        return true;
                     }
-                    player2NumInARow = 0;
                 }
-                else if (grid[x][y] == player2piece) {
-                    ++player2NumInARow;
-
-                    if (player2NumInARow > player2MaxNumInARow) {
-                        player2MaxNumInARow = player2NumInARow;
-
-                        if (player2MaxNumInARow >= 4) {
-                            System.out.println("Player 2 Wins");
-                            return true;
-                        }
+            }
+            if (grid[start][cor.y] == player2piece) {
+                ++player2NumInARow;
+                if (player2NumInARow > player2MaxNumInARow) {
+                    player2MaxNumInARow = player2NumInARow;
+                    if (player2MaxNumInARow >= 4) {
+                        System.out.println("Player 2 Wins");
+                        return true;
                     }
-                    player1NumInARow = 0;
                 }
-                else {
-                    player2NumInARow = 0;
-                    player1NumInARow = 0;
-                }
+            }
+            else {
+                player1NumInARow = 0;
+                player2NumInARow = 0;
             }
         }
         return false;
     }
 
-    public boolean checkForWinnerVertical() {
+    public boolean checkForWinnerVertical(Coordinates cor) {
         int player1MaxNumInARow = 0;
-        int player1NumInARow;
+        int player1NumInARow = 0;
         int player2MaxNumInARow = 0;
-        int player2NumInARow;
-
-        for (int x = 0; x < width; ++x) {
-            player1NumInARow = 0;
-            player2NumInARow = 0;
-
-            for (int y = 0; y < height; ++y) {
-                if (grid[x][y] == player1piece) {
-                    ++player1NumInARow;
-
-                    if (player1NumInARow > player1MaxNumInARow) {
-                        player1MaxNumInARow = player1NumInARow;
-
-                        if (player1MaxNumInARow >= 4) {
+        int player2NumInARow = 0;
+        int start = cor.y - 4;
+        int end = cor.y + 4;
+        if (start < 0)
+            start = 0;
+        if (end > height)
+            end = height;
+        for ( ; start < end; ++start) {
+            if (grid[cor.x][start] == player1piece) {
+                ++player1NumInARow;
+                if (player1NumInARow > player1MaxNumInARow) {
+                    player1MaxNumInARow = player1NumInARow;
+                    if (player1MaxNumInARow >= 4) {
+                        if (onePlayer)
+                            System.out.println("You Win! :)");
+                        else
                             System.out.println("Player 1 Wins");
-                            return true;
-                        }
+                        return true;
                     }
-                    player2NumInARow = 0;
                 }
-                else if (grid[x][y] == player2piece) {
-                    ++player2NumInARow;
-
-                    if (player2NumInARow > player2MaxNumInARow) {
-                        player2MaxNumInARow = player2NumInARow;
-
-                        if (player2MaxNumInARow >= 4) {
-                            System.out.println("Player 2 Wins");
-                            return true;
-                        }
+            }
+            if (grid[cor.x][start] == player2piece) {
+                ++player2NumInARow;
+                if (player2NumInARow > player2MaxNumInARow) {
+                    player2MaxNumInARow = player2NumInARow;
+                    if (player2MaxNumInARow >= 4) {
+                        System.out.println("Player 2 Wins");
+                        return true;
                     }
-                    player1NumInARow = 0;
                 }
-                else {
-                    player2NumInARow = 0;
-                    player1NumInARow = 0;
-                }
+            }
+            else {
+                player1NumInARow = 0;
+                player2NumInARow = 0;
             }
         }
         return false;
     }
 
-    public boolean checkForWinner() {
-        int player1MaxNumInARow = 0;
-        int player1NumInARow;
-        int player2MaxNumInARow = 0;
-        int player2NumInARow;
-
-        for (int x = 0; x < width; ++x)
-        {
-            player1NumInARow = 0;
-            player2NumInARow = 0;
-
-            for (int y = 0; y < height; ++y)
-            {
-
-                if (grid[x][y] == player1piece)
-                {
-                    ++player1NumInARow;
-
-                    if (player1NumInARow > player1MaxNumInARow)
-                    {
-                        player1MaxNumInARow = player1NumInARow;
-
-                        if (player1MaxNumInARow >= 4)
-                        {
-                            System.out.println("Player 1 Wins");
-                            return true;
-                        }
-                    }
-                    player2NumInARow = 0;
-                }
-                else if (grid[x][y] == player2piece)
-                {
-                    ++player2NumInARow;
-
-                    if (player2NumInARow > player2MaxNumInARow)
-                    {
-                        player2MaxNumInARow = player2NumInARow;
-                        if (player2MaxNumInARow >= 4)
-                        {
-                            System.out.println("Player 2 Wins");
-                            return true;
-                        }
-                    }
-                    player1NumInARow = 0;
-                }
-                else
-                {
-                    player2NumInARow = 0;
-                    player1NumInARow = 0;
-                }
-            }
-        }
-        for (int y = 0; y < height; ++y)
-        {
-            player1NumInARow = 0;
-            player2NumInARow = 0;
-
-            for (int x = 0; x < width; ++x)
-            {
-                if (grid[x][y] == player1piece)
-                {
-                    ++player1NumInARow;
-
-                    if (player1NumInARow > player1MaxNumInARow)
-                    {
-                        player1MaxNumInARow = player1NumInARow;
-
-                        if (player1MaxNumInARow >= 4)
-                        {
-                            System.out.println("Player 1 Wins");
-                            return true;
-                        }
-                    }
-                    player2NumInARow = 0;
-                }
-                else if (grid[x][y] == player2piece)
-                {
-                    ++player2NumInARow;
-
-                    if (player2NumInARow > player2MaxNumInARow)
-                    {
-                        player2MaxNumInARow = player2NumInARow;
-
-                        if (player2MaxNumInARow >= 4) {
-                            System.out.println("Player 2 Wins");
-                            return true;
-                        }
-                    }
-                    player1NumInARow = 0;
-                }
-                else
-                {
-                    player2NumInARow = 0;
-                    player1NumInARow = 0;
-                }
-            }
-        }
-
-        return false;
+    public boolean checkForWinner(Coordinates cor) {
+        if (checkForWinnerVertical(cor))
+            return true;
+        else
+            return checkForWinnerHorizontal(cor);
     }
 
     public int piecesToWin(int col, int player)

@@ -28,26 +28,28 @@ public class Game {
         while (true)
         {
             int col = readInt("column to put your piece into:");
-
-            while (!board.placeAPiece(col, 1))
+            Coordinates coordinates = board.placeAPiece(col, 1);
+            while (!coordinates.check) {
                 col = readInt("\n" + board.tryMessage + ":");
+                coordinates = board.placeAPiece(col, 1);
+            }
             board.printBoard();
 
-            if (board.checkForWinner())
+            if (board.checkForWinner(coordinates))
             {
-                System.out.println("You win!");
                 break;
             }
             int check = 0;
 
             while (check < 1) {
                 col = random.nextInt(board.width);
-                if (board.placeAPiece(col, 2))
+                coordinates = board.placeAPiece(col, 1);
+                if (!coordinates.check)
                     ++check;
             }
             board.printBoard();
 
-            if (board.checkForWinner())
+            if (board.checkForWinner(coordinates))
             {
                 System.out.println("Computer wins :(");
                 break;
@@ -63,22 +65,26 @@ public class Game {
 
         while (true)
         {
-            int col = readInt("Player one please enter the column you want to put your piece into:");
-
-            while (!board.placeAPiece(col, 1))
-                col = readInt("\nPlayer One" + board.tryMessage + ":");
+            int col = readInt("Player One please enter the column you want to put your piece into:");
+            Coordinates coordinates = board.placeAPiece(col, 1);
+            while (!coordinates.check) {
+                col = readInt("\nPlayer One" + Board.tryMessage + ":");
+                coordinates = board.placeAPiece(col, 1);
+            }
             board.printBoard();
 
-            if (board.checkForWinner())
+            if (board.checkForWinner(coordinates))
                 break;
 
-            col = readInt("Player two please enter the column you want to put your piece into:");
-
-            while (!board.placeAPiece(col, 2))
-                col = readInt("\nPlayer Two" + board.tryMessage + ":");
+                col = readInt("Player One please enter the column you want to put your piece into:");
+                coordinates = board.placeAPiece(col, 1);
+                while (!coordinates.check) {
+                    col = readInt("\nPlayer Two" + board.tryMessage + ":");
+                    coordinates = board.placeAPiece(col, 1);
+                }
             board.printBoard();
 
-            if (board.checkForWinner())
+            if (board.checkForWinner(coordinates))
                 break;
         }
     }
