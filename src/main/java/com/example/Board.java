@@ -62,6 +62,64 @@ public class Board {
         return coordinates;
     }
 
+    public boolean checkForWinnerNorthEastDiagonal(Coordinates cor)
+    {
+        int player1MaxNumInARow = 0;
+        int player1NumInARow = 0;
+        int player2MaxNumInARow = 0;
+        int player2NumInARow = 0;
+
+        Coordinates start = new Coordinates();
+        start.x = cor.x - 4;
+        start.y = cor.y - 4;
+        Coordinates end = new Coordinates();
+        end.x = cor.x + 4;
+        end.y = cor.x + 4;
+
+        if (start.x < 0)
+            start.x = 0;
+        if (start.y < 0)
+            start.y = 0;
+        if (end.x > width)
+            end.x = width;
+        if (end.y > height)
+            end.y = height;
+
+        while (start.x < end.x || start.y < end.y) {
+            if (grid[start.x][start.y] == player1piece) {
+                ++player1NumInARow;
+                if (player1NumInARow > player1MaxNumInARow) {
+                    player1MaxNumInARow = player1NumInARow;
+                    if (player1MaxNumInARow >= 4) {
+                        if (onePlayer)
+                            System.out.println("You Win! :)");
+                        else
+                            System.out.println("Player 1 Wins");
+                        return true;
+                    }
+                }
+            }
+            if (grid[start.x][start.y] == player2piece) {
+                ++player2NumInARow;
+                if (player2NumInARow > player2MaxNumInARow) {
+                    player2MaxNumInARow = player2NumInARow;
+                    if (player2MaxNumInARow >= 4) {
+                        System.out.println("Player 2 Wins");
+                        return true;
+                    }
+                }
+            }
+            else {
+                player1NumInARow = 0;
+                player2NumInARow = 0;
+            }
+            ++start.y;
+            ++start.x;
+        }
+
+        return false;
+    }
+
     public boolean checkForWinnerHorizontal(Coordinates cor) {
         int player1MaxNumInARow = 0;
         int player1NumInARow = 0;
@@ -69,10 +127,12 @@ public class Board {
         int player2NumInARow = 0;
         int start = cor.x - 4;
         int end = cor.x + 4;
+
         if (start < 0)
             start = 0;
         if (end > width)
             end = width;
+
         for ( ; start < end; ++start) {
             if (grid[start][cor.y] == player1piece) {
                 ++player1NumInARow;
@@ -151,8 +211,12 @@ public class Board {
     public boolean checkForWinner(Coordinates cor) {
         if (checkForWinnerVertical(cor))
             return true;
-        else
-            return checkForWinnerHorizontal(cor);
+        else if (checkForWinnerHorizontal(cor))
+            return true;
+        else if (checkForWinnerNorthEastDiagonal(cor))
+            return true;
+        return false;
+
     }
 
     public int piecesToWin(int col, int player)
