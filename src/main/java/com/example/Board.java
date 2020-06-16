@@ -70,20 +70,20 @@ public class Board {
         int player2NumInARow = 0;
 
         Coordinates start = new Coordinates();
-        start.x = cor.x - 4;
-        start.y = cor.y - 4;
-        Coordinates end = new Coordinates();
-        end.x = cor.x + 4;
-        end.y = cor.x + 4;
+        for (int i = 0; i < 5; ++i) {
+            start.x = cor.x - (4 - i);
+            start.y = cor.y - (4 - i);
+            if (start.x >= 0 && start.y >= 0)
+                break;
+        }
 
-        if (start.x < 0)
-            start.x = 0;
-        if (start.y < 0)
-            start.y = 0;
-        if (end.x > width)
-            end.x = width;
-        if (end.y > height)
-            end.y = height;
+        Coordinates end = new Coordinates();
+        for (int i = 0; i < 5; ++i) {
+            end.x = cor.x + (5 - i);
+            end.y = cor.y + (5 - i);
+            if (end.x < width && end.y < height)
+                break;
+        }
 
         while (start.x < end.x || start.y < end.y) {
             if (grid[start.x][start.y] == player1piece) {
@@ -115,6 +115,64 @@ public class Board {
             }
             ++start.y;
             ++start.x;
+        }
+
+        return false;
+    }
+
+    public boolean checkForWinnerSouthEastDiagonal(Coordinates cor)
+    {
+        int player1MaxNumInARow = 0;
+        int player1NumInARow = 0;
+        int player2MaxNumInARow = 0;
+        int player2NumInARow = 0;
+
+        Coordinates start = new Coordinates();
+        for (int i = 0; i < 5; ++i) {
+            start.x = cor.x - (4 - i);
+            start.y = cor.y + (4 - i);
+            if (start.x >= 0 && start.y >= 0)
+                break;
+        }
+
+        Coordinates end = new Coordinates();
+        for (int i = 0; i < 5; ++i) {
+            end.x = cor.x + (5 - i);
+            end.y = cor.y - (5 - i);
+            if (end.x < width && end.y < height)
+                break;
+        }
+
+        while (start.x < end.x || start.y > end.y) {
+            if (grid[start.x][start.y] == player1piece) {
+                ++player1NumInARow;
+                if (player1NumInARow > player1MaxNumInARow) {
+                    player1MaxNumInARow = player1NumInARow;
+                    if (player1MaxNumInARow >= 4) {
+                        if (onePlayer)
+                            System.out.println("You Win! :)");
+                        else
+                            System.out.println("Player 1 Wins");
+                        return true;
+                    }
+                }
+            }
+            if (grid[start.x][start.y] == player2piece) {
+                ++player2NumInARow;
+                if (player2NumInARow > player2MaxNumInARow) {
+                    player2MaxNumInARow = player2NumInARow;
+                    if (player2MaxNumInARow >= 4) {
+                        System.out.println("Player 2 Wins");
+                        return true;
+                    }
+                }
+            }
+            else {
+                player1NumInARow = 0;
+                player2NumInARow = 0;
+            }
+            ++start.x;
+            --start.y;
         }
 
         return false;
